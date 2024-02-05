@@ -1,0 +1,113 @@
+
+CREATE TABLE Users(
+    id INT(15) PRIMARY KEY AUTO_INCREMENT, 
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(70) NOT NULL,
+    mobile VARCHAR(100) NOT NULL);
+    
+    
+ INSERT INTO Users (username, email, password, mobile)
+VALUES ('shraddha', 'shraddhakhilari26@email.com', 'pass@123', '8080254657');
+
+
+
+
+
+
+
+CREATE TABLE ServiceProviders (
+    provider_id INT(15) PRIMARY KEY AUTO_INCREMENT,
+    user_id INT(15) REFERENCES Users(id),
+    service_category VARCHAR(50) NOT NULL,
+    experience_years INT,
+    rating DECIMAL(3, 1) DEFAULT 0.0 CHECK (rating >= 0 AND rating <= 10));
+
+INSERT INTO ServiceProviders (1, service_category, experience_years, rating) VALUES (1, 'Plumbing', 2, 9.99);
+
+
+
+
+
+
+
+CREATE TABLE Services (
+    service_id INT(15) PRIMARY KEY AUTO_INCREMENT,
+    service_name VARCHAR(50) NOT NULL,
+    service_description TEXT,
+    service_category VARCHAR(50) NOT NULL,
+    service_price DECIMAL(10, 2) NOT NULL
+    );
+
+
+INSERT INTO Services (service_name, service_description, service_category, service_price)
+VALUES ('Cleaning Service', 'Professional cleaning for your home or office', 'Household', 50000);  
+
+
+
+
+
+
+
+CREATE TABLE Booking (
+    booking_id INT(15) PRIMARY KEY AUTO_INCREMENT,
+    user_id INT(30) REFERENCES Users(id),
+    provider_id INT(20) REFERENCES ServiceProviders(provider_id),
+    service_id INT(20) REFERENCES Services(service_id),
+    booking_date DATE NOT NULL,
+    status VARCHAR(50) NOT NULL);  
+      
+    
+  INSERT INTO Booking (user_id, provider_id, service_id, booking_date, status)
+VALUES (1, 101, 201, '2024-01-15', 'confirmed'),
+                (2, 102, 202, '2024-02-01', 'pending'),
+             (3, 103, 203, '2024-03-10', 'completed');
+
+
+
+
+
+
+CREATE TABLE Reviews (
+    review_id  INT(20)  PRIMARY KEY  AUTO_INCREMENT,
+    user_id INT(20)  REFERENCES Users(id),
+    provider_id INT(20 ) REFERENCES ServiceProviders(provider_id),
+    rating DECIMAL(3, 1) DEFAULT 0.0 CHECK (rating >= 0 AND rating <= 10) NOT NULL,
+    comment TEXT,
+    review_date DATE NOT NULL);
+
+
+INSERT INTO Reviews (user_id, provider_id, rating, comment, review_date)
+VALUES 
+      (1, 101, 10, 'Great service! Very satisfied.', '2024-01-03'),
+       (2, 102, 0, 'Good experience overall.', '2024-01-04'),
+       (3, 103, 5.0, 'Excellent job! Highly recommended.', '2024-01-05');
+       
+       
+       
+       
+       
+       
+       
+       
+       
+CREATE TABLE Notifications (
+    notification_id INT(25) PRIMARY KEY AUTO_INCREMENT,
+    user_id INT(25) REFERENCES Users(id),
+    message TEXT,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'unread');
+
+ 
+ INSERT INTO Notifications (user_id, message, timestamp, status)
+VALUES (1, 'New message received.', '2024-01-03 08:30:00', 'unread'),
+       (2, 'Your appointment is confirmed.', '2024-01-04 10:15:00', 'unread'),
+       (3, 'Reminder: Meeting at 2 PM today.', CURRENT_TIMESTAMP, 'read');      
+       
+       
+       
+       
+       
+
+
+
